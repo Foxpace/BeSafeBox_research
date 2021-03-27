@@ -2,6 +2,7 @@
 
 [![Python Version](https://img.shields.io/badge/python-3.7-blue)](https://www.python.org/downloads/release/python-379/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/python/black)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 This part of the project, tries to research the subject of the fall/collapse detection and provide 
 an easy solution. The model uses hand-made features of a statistical character, which are 
