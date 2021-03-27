@@ -1,47 +1,46 @@
-from typing import Optional
+"""
+ This file is part of BeSafeBox Android application.
+ Copyright (C) 2019  Tomáš Repčík
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+"""
 
 import numpy as np
+from numba import njit
+
+from Consts import Consts
+from DataCarrier import DataCarrier, SensorData
+from EventOfInterest import EventOfInterest
 
 
-class EventOfInterest:
-    def __init__(
-        self,
-        event_time: np.ndarray,
-        event_magnitude: np.ndarray,
-        begin_index: int,
-        end_index: int,
-        max_index: int,
-        free_fall_end_index: int,
-    ):
-        self.event_time = event_time
-        self.event_magnitude = event_magnitude
-        self.begin_index = begin_index
-        self.end_index = end_index
-        self.max_index = max_index
-        self.free_fall_end_index = free_fall_end_index
-
-    def get_from_free_fall(self, amplitude_vector: np.ndarray):
-        if self.free_fall_end_index is not None:
-            return amplitude_vector[self.free_fall_end_index - self.begin_index:]
-        return amplitude_vector[self.begin_index:self.end_index]
-
-
+@njit()
 def pick_array_of_interest(
     time_seconds, magnitude_vector, threshold_ending=15, begin_max=0.3, end_max=0.7
-) -> Optional[EventOfInterest]:
+):
     """
-
-    :param time_seconds: time of array
-    :param magnitude_vector: self explanatory
-    :param threshold_ending: at end, value of ending
-    :param begin_max: max time from middle
-    :param end_max: max end time
-    :return: ArrayOfInterest object, which concludes everything
+    :param time_seconds: 1D vector
+    :param magnitude_vector: 1D vector
+    :param threshold_ending: at end, minimal value of ending
+    :param begin_max: max time to middle
+    :param end_max: max end time of event
+    :return: time interval of interesting event (seconds) with magnitude,
+    indexes begin, end, max_peak_index, free_fall_end
     """
-    max_peak_index = int(np.argmax(np.array(magnitude_vector)))
+    max_peak_index = np.int64(np.argmax(magnitude_vector))
     max_peak_time = time_seconds[max_peak_index]
     begin = 0
-    end = int(len(time_seconds))
+    end = time_seconds.shape[0]
     free_fall_end = None
 
     for i in range(max_peak_index, 0, -1):
@@ -113,7 +112,7 @@ def pick_array_of_interest(
     if begin < 0:
         begin = 0
 
-    return EventOfInterest(
+    return (
         time_seconds[begin:end],
         magnitude_vector[begin:end],
         begin,
@@ -121,3 +120,92 @@ def pick_array_of_interest(
         max_peak_index,
         free_fall_end,
     )
+
+
+def get_event_of_interest(
+    time_seconds, magnitude_vector, threshold_ending=15, begin_max=0.3, end_max=0.7
+) -> EventOfInterest:
+    """
+    Wrapper for EventOfInterest object and method
+    :param time_seconds: 1D vector
+    :param magnitude_vector: 1D vector
+    :param threshold_ending: at end, minimal value of ending
+    :param begin_max: max time to middle
+    :param end_max: max end time of event
+    :return: EventOfInterest object
+    """
+    (
+        time_seconds,
+        magnitude_vector,
+        begin,
+        end,
+        max_peak_index,
+        free_fall_end,
+    ) = pick_array_of_interest(
+        time_seconds=time_seconds,
+        magnitude_vector=magnitude_vector,
+        threshold_ending=threshold_ending,
+        begin_max=begin_max,
+        end_max=end_max,
+    )
+    return EventOfInterest(
+        time_seconds, magnitude_vector, begin, end, max_peak_index, free_fall_end
+    )
+
+
+def check_data_integrity_fall_detection(
+    data_to_validate: DataCarrier,
+    time_threshold=0.2,
+    acceleration_threshold=16,
+    pick_event=True,
+) -> bool:
+    """
+    Checks if the measurement complies with requirements - checks only acceleration part
+    :param acceleration_threshold: magnitude of the measurement is above the threshold
+    :param time_threshold: delay between 2 samples is not higher than threshold
+    :param data_to_validate: DataCarrier to check
+    :param pick_event: if the event of interest should be added to carrier
+    :return: boolean if everything is ok
+    """
+    acceleration: SensorData = data_to_validate.sensor_data[Consts.ACG]
+    calculate_time_magnitude(acceleration)
+
+    if np.any(np.diff(acceleration.modified[Consts.TIME_SECONDS]) > time_threshold):
+        return False
+
+    if np.all(acceleration.modified[Consts.MAGNITUDE] < acceleration_threshold):
+        return False
+
+    if pick_event:
+        event_of_interest: EventOfInterest = get_event_of_interest(
+            time_seconds=acceleration.modified[Consts.TIME_SECONDS],
+            magnitude_vector=acceleration.modified[Consts.MAGNITUDE],
+        )
+
+        if event_of_interest is None:
+            return False
+        else:
+            data_to_validate.event_holder = event_of_interest
+
+    return True
+
+
+def normalize_time(t, conversion_rate=-9) -> np.ndarray:
+    """
+    converts nanoseconds to seconds
+    :param conversion_rate: set -3 different for millis
+    :param t: time in nanos
+    :return:  time in seconds
+    """
+    if t is not np.ndarray:
+        t = np.array(t)
+    return (t - t.item(0)) * (10 ** conversion_rate)
+
+
+def calculate_time_magnitude(data: SensorData):
+    """
+    Adds magnitude and time converted to seconds for SensorData object
+    :param data: SensorData object
+    """
+    data.modified[Consts.MAGNITUDE] = np.linalg.norm(data.data, axis=0)
+    data.modified[Consts.TIME_SECONDS] = normalize_time(data.time)
