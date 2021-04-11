@@ -38,7 +38,7 @@ prevent an overuse of the model (like a high activity of the person / fall of th
 indications resulted into false alarm, which is 16 % false positivity. Users reported, that the most of the events 
 occurred while high physical activity, or they slammed themselves on the couch / bed.
 
-### For more info  check _Research.ipynb_ 
+### For more info check [Research.ipynb](https://github.com/Foxpace/BeSafeBox_research/blob/master/Research.ipynb)
 
 
 ## Structure of the project
