@@ -2,6 +2,7 @@
 
 [![Python Version](https://img.shields.io/badge/python-3.7-blue)](https://www.python.org/downloads/release/python-379/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/python/black)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 This part of the project, tries to research the subject of the fall/collapse detection and provide 
 an easy solution. The model uses hand-made features of a statistical character, which are 
@@ -37,7 +38,7 @@ prevent an overuse of the model (like a high activity of the person / fall of th
 indications resulted into false alarm, which is 16 % false positivity. Users reported, that the most of the events 
 occurred while high physical activity, or they slammed themselves on the couch / bed.
 
-### For more info  check _Research.ipynb_ 
+### For more info check [Research.ipynb](https://github.com/Foxpace/BeSafeBox_research/blob/master/Research.ipynb)
 
 
 ## Structure of the project
