@@ -87,28 +87,28 @@ year = {2019}
 
 
 ## Resources used in code
-**1.**\
-**authors:** SANTOYO-RAMÓN, José Antonio, Eduardo CASILARI and José Manue CANO-GARCÍA\
+**1.**
+**authors:** SANTOYO-RAMÓN, José Antonio, Eduardo CASILARI and José Manue CANO-GARCÍA
 **work:** _Analysis of a smartphone-based architecture with multiple mobility sensors for fall detection with
-supervised learning._\
-**DOI:** doi:10.3390/s18041155
+supervised learning._
+**DOI:** [doi:10.3390/s18041155](https://doi.org/10.3390/s18041155)
 
-**2.**\
-**authors:** FIGUEIREDO, Isabel N., Carlos LEAL, Luís PINTO, Jason BOLITO a André LEMOS.\
+**2.**
+**authors:** FIGUEIREDO, Isabel N., Carlos LEAL, Luís PINTO, Jason BOLITO a André LEMOS.
 **work:** Exploring smartphone sensors for fall detection\
-**DOI**: doi:10.1186/s13678-016-0004-1
+**DOI**: [doi:10.1186/s13678-016-0004-1](https://doi.org/10.1186/s13678-016-0004-1)
 
-**3.**\
-**authors:** ABBATE, Stefano, Marco AVVENUTI, Guglielmo COLA, Paolo CORSINI, Janet LIGHT a Alessio VECCHIO.\
-**work:** Recognition of false alarms in fall detection systems\
-**DOI:** doi:10.1109/CCNC.2011.5766464
+**3.**
+**authors:** ABBATE, Stefano, Marco AVVENUTI, Guglielmo COLA, Paolo CORSINI, Janet LIGHT a Alessio VECCHIO.
+**work:** Recognition of false alarms in fall detection systems
+**DOI:** [doi:10.1109/CCNC.2011.5766464](https://doi.org/10.1109/CCNC.2011.5766464)
 
-**4.**\
-**author:** HJORT, Bo\
-**work:** EEG Analysis Based On Time Domain Properties\
-**DOI:** doi:10.1016/0013-4694(70)90143-4
+**4.**
+**author:** HJORT, Bo
+**work:** EEG Analysis Based On Time Domain Properties
+**DOI:** [doi:10.1016/0013-4694(70)90143-4](https://doi.org/10.1016/0013-4694(70)90143-4)
 
-**5.**\
+**5.**
 **author:** MARAGOS, P., J.F. KAISER a T.F. QUATIERI\
-**work:** On amplitude and frequency demodulation using energy operators\
-**DOI:** doi:10.1109/78.212729
+**work:** On amplitude and frequency demodulation using energy operators
+**DOI:** [doi:10.1109/78.212729](https://doi.org/10.1109/78.212729)
