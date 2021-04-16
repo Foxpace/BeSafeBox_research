@@ -20,7 +20,8 @@ The data were gathered by custom phone app,
 [SensorBox, available at Google Play](https://play.google.com/store/apps/details?id=motionapps.sensorbox),
 with usage of 2 different phones, which were placed in a pocket of trousers, jeans, shirt or jacket.
 
-### [You can check SensorBox repository  here](https://github.com/Foxpace/SensorBox)
+### [You can check SensorBox repository here](https://github.com/Foxpace/SensorBox)
+### [For Android app of BeSafeBox implementation go here](https://github.com/Foxpace/BeSafeBox_Android_app)
 
 ## Real life testing
 False positivity was tested at almost 300h of acceleration data from real life, which resulted in more
